@@ -15,7 +15,7 @@ export default function ProjectSidebar({ projects, activeId, onSelect, onCreate,
 
   if (collapsed) {
     return (
-      <div style={{ width: 36, background: '#f8fafc', borderRight: '1px solid #e2e8f0', display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '10px 0', gap: 8, flexShrink: 0 }}>
+      <div style={{ width: 36, background: '#e8f2f2', borderRight: '1px solid #cde0e0', display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '10px 0', gap: 8, flexShrink: 0 }}>
         <button onClick={() => setCollapsed(false)} title="Expandir" style={iconBtn}>›</button>
         {projects.map(p => (
           <div key={p.id} onClick={() => onSelect(p.id)} title={p.name}
@@ -26,8 +26,8 @@ export default function ProjectSidebar({ projects, activeId, onSelect, onCreate,
   }
 
   return (
-    <aside style={{ width: 210, background: '#f8fafc', borderRight: '1px solid #e2e8f0', display: 'flex', flexDirection: 'column', flexShrink: 0, overflow: 'hidden' }}>
-      <div style={{ display: 'flex', alignItems: 'center', padding: '13px 12px 10px', borderBottom: '1px solid #e2e8f0', flexShrink: 0 }}>
+    <aside style={{ width: 210, background: '#e8f2f2', borderRight: '1px solid #cde0e0', display: 'flex', flexDirection: 'column', flexShrink: 0, overflow: 'hidden' }}>
+      <div style={{ display: 'flex', alignItems: 'center', padding: '13px 12px 10px', borderBottom: '1px solid #cde0e0', flexShrink: 0 }}>
         <span style={{ fontSize: 10, color: '#94a3b8', fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase', flex: 1 }}>Proyectos</span>
         <button onClick={() => setCollapsed(true)} style={iconBtn} title="Colapsar">‹</button>
       </div>
@@ -47,13 +47,13 @@ export default function ProjectSidebar({ projects, activeId, onSelect, onCreate,
         ))}
       </div>
 
-      <div style={{ padding: '8px 10px 12px', borderTop: '1px solid #e2e8f0', flexShrink: 0 }}>
+      <div style={{ padding: '8px 10px 12px', borderTop: '1px solid #cde0e0', flexShrink: 0 }}>
         {adding ? (
           <div style={{ display: 'flex', gap: 6 }}>
             <input autoFocus value={newName} onChange={e => setNewName(e.target.value)}
               onKeyDown={e => { if (e.key === 'Enter') handleCreate(); if (e.key === 'Escape') { setAdding(false); setNewName(''); } }}
               placeholder="Nombre…"
-              style={{ flex: 1, background: '#fff', border: '1px solid #e2e8f0', borderRadius: 6, padding: '6px 8px', color: '#334155', fontSize: 12, outline: 'none', minWidth: 0 }}
+              style={{ flex: 1, background: '#deeaea', border: '1px solid #cde0e0', borderRadius: 6, padding: '6px 8px', color: '#334155', fontSize: 12, outline: 'none', minWidth: 0 }}
             />
             <button onClick={handleCreate} style={{ ...iconBtn, color: '#06b6d4', fontSize: 16 }}>✓</button>
           </div>
