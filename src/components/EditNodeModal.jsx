@@ -7,16 +7,23 @@ const STATUS_OPTIONS = [
   { value: 'blocked',     label: 'Bloqueado' },
 ];
 
+const PRIORITY_OPTIONS = [
+  { value: 'high',   label: '↑ Alta',  color: '#ef4444' },
+  { value: 'medium', label: '→ Media', color: '#f97316' },
+  { value: 'low',    label: '↓ Baja',  color: '#52525b' },
+];
+
 export default function EditNodeModal({ node, onClose, onSave }) {
   const [label, setLabel] = useState(node.data.label);
   const [description, setDescription] = useState(node.data.description ?? '');
   const [notes, setNotes] = useState(node.data.notes ?? '');
   const [status, setStatus] = useState(node.data.status);
+  const [priority, setPriority] = useState(node.data.priority ?? 'low');
 
   function handleSubmit(e) {
     e.preventDefault();
     if (!label.trim()) return;
-    onSave({ label: label.trim(), description: description.trim(), notes, status });
+    onSave({ label: label.trim(), description: description.trim(), notes, status, priority });
   }
 
   return (
@@ -51,6 +58,26 @@ export default function EditNodeModal({ node, onClose, onSave }) {
         <select value={status} onChange={e => setStatus(e.target.value)} style={inp}>
           {STATUS_OPTIONS.map(o => <option key={o.value} value={o.value}>{o.label}</option>)}
         </select>
+
+        <label style={lbl}>Prioridad</label>
+        <div style={{ display: 'flex', gap: 8, marginBottom: 4 }}>
+          {PRIORITY_OPTIONS.map(o => (
+            <button
+              key={o.value}
+              type="button"
+              onClick={() => setPriority(o.value)}
+              style={{
+                flex: 1, padding: '8px 0', borderRadius: 7, cursor: 'pointer', fontSize: 12, fontWeight: 600,
+                background: priority === o.value ? `${o.color}22` : '#0c0c0e',
+                border: `1.5px solid ${priority === o.value ? o.color : '#27272a'}`,
+                color: priority === o.value ? o.color : '#52525b',
+                transition: 'all 0.12s',
+              }}
+            >
+              {o.label}
+            </button>
+          ))}
+        </div>
 
         <label style={lbl}>Notas</label>
         <textarea

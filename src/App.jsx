@@ -29,7 +29,7 @@ export default function App() {
         nodes: [...p.nodes, {
           id, type: 'roadmapNode',
           position: { x: 160 + Math.random() * 280, y: 140 + Math.random() * 180 },
-          data: { label, description, status, notes: '' },
+          data: { label, description, status, notes: '', priority: 'medium', updatedAt: new Date().toISOString() },
         }],
       }
     ));
@@ -39,7 +39,7 @@ export default function App() {
     setProjects(prev => prev.map(p =>
       p.id !== activeId ? p : {
         ...p,
-        nodes: p.nodes.map(n => n.id !== id ? n : { ...n, data: { ...n.data, ...updates } }),
+        nodes: p.nodes.map(n => n.id !== id ? n : { ...n, data: { ...n.data, ...updates, updatedAt: new Date().toISOString() } }),
       }
     ));
   }, [activeId, setProjects]);
@@ -48,7 +48,7 @@ export default function App() {
     setProjects(prev => prev.map(p =>
       p.id !== activeId ? p : {
         ...p,
-        nodes: p.nodes.map(n => n.id !== nodeId ? n : { ...n, data: { ...n.data, status: newStatus } }),
+        nodes: p.nodes.map(n => n.id !== nodeId ? n : { ...n, data: { ...n.data, status: newStatus, updatedAt: new Date().toISOString() } }),
       }
     ));
   }, [activeId, setProjects]);
