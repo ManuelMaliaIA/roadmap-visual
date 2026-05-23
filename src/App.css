@@ -124,10 +124,9 @@ body {
 
 /* ---- React Flow overrides ---- */
 .react-flow__controls button {
-  background: #0a1414 !important;
-  border-color: #0f2828 !important;
-  color: #1e4040 !important;
-  fill: #1e4040 !important;
+  background: #ffffff !important;
+  border-color: #e2e8f0 !important;
+  color: #64748b !important;
+  fill: #64748b !important;
 }
-.react-flow__controls button:hover { background: #0f1e1e !important; }
-.react-flow__edge-path { stroke: #0f3030 !important; }
+.react-flow__controls button:hover { background: #f1f5f9 !important; }

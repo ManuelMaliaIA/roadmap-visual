@@ -3,10 +3,10 @@ import { Handle, Position } from '@xyflow/react';
 import { timeAgo } from '../utils/time';
 
 const STATUS_CONFIG = {
-  done:        { bg: '#022c22', border: '#10b981', accent: '#10b981', label: 'Hecho' },
-  in_progress: { bg: '#071e26', border: '#06b6d4', accent: '#06b6d4', label: 'En curso' },
-  pending:     { bg: '#0d1117', border: '#334155', accent: '#64748b', label: 'Pendiente' },
-  blocked:     { bg: '#1f0a0e', border: '#f43f5e', accent: '#f43f5e', label: 'Bloqueado' },
+  done:        { bg: '#f0fdf4', border: '#10b981', accent: '#059669', text: '#064e3b', sub: '#6ee7b7' },
+  in_progress: { bg: '#ecfeff', border: '#06b6d4', accent: '#0891b2', text: '#164e63', sub: '#67e8f9' },
+  pending:     { bg: '#f8fafc', border: '#cbd5e1', accent: '#64748b', text: '#334155', sub: '#94a3b8' },
+  blocked:     { bg: '#fff1f2', border: '#f43f5e', accent: '#e11d48', text: '#881337', sub: '#fda4af' },
 };
 
 const PRIORITY_BORDER = {
@@ -27,15 +27,15 @@ export default function CustomNode({ data, selected }) {
       style={{
         background: cfg.bg,
         border: `1.5px solid ${isNext ? '#0d9488' : selected ? '#06b6d4' : cfg.border}`,
-        borderLeft: priorityColor ? `4px solid ${priorityColor}` : undefined,
+        borderLeft: priorityColor ? `4px solid ${priorityColor}` : `4px solid ${cfg.border}`,
         borderRadius: 10,
         minWidth: 185,
         maxWidth: 225,
         boxShadow: isNext
-          ? '0 0 0 2px #080c0c, 0 0 0 4px #0d9488, 0 12px 40px rgba(13,148,136,0.3)'
+          ? `0 0 0 3px #0d948840, 0 8px 32px rgba(13,148,136,0.2), 0 2px 8px rgba(0,0,0,0.08)`
           : selected
-          ? '0 0 0 2px #06b6d4'
-          : '0 2px 14px rgba(0,0,0,0.5)',
+          ? `0 0 0 2px #06b6d440, 0 2px 8px rgba(0,0,0,0.08)`
+          : '0 1px 4px rgba(0,0,0,0.08), 0 4px 16px rgba(0,0,0,0.06)',
         cursor: 'grab',
         position: 'relative',
         userSelect: 'none',
@@ -53,23 +53,23 @@ export default function CustomNode({ data, selected }) {
       )}
 
       <Handle type="target" position={Position.Left}
-        style={{ background: '#0f2020', border: '2px solid #1e3a3a', width: 10, height: 10 }} />
+        style={{ background: '#fff', border: `2px solid ${cfg.border}`, width: 10, height: 10 }} />
 
       {/* Header */}
-      <div style={{ padding: '10px 10px 8px 12px', borderBottom: `1px solid ${cfg.border}30` }}>
+      <div style={{ padding: '10px 10px 8px 12px', borderBottom: `1px solid ${cfg.border}40` }}>
         <div style={{ display: 'flex', alignItems: 'flex-start', gap: 7 }}>
           <span style={{ width: 7, height: 7, borderRadius: '50%', background: cfg.accent, flexShrink: 0, marginTop: 4 }} />
-          <span style={{ color: '#e2e8f0', fontWeight: 600, fontSize: 12.5, lineHeight: 1.35, flex: 1, wordBreak: 'break-word' }}>
+          <span style={{ color: cfg.text, fontWeight: 700, fontSize: 12.5, lineHeight: 1.35, flex: 1, wordBreak: 'break-word' }}>
             {data.label}
           </span>
           <button
             onClick={e => { e.stopPropagation(); data.onDelete?.(); }}
-            style={{ background: 'none', border: 'none', color: '#1e3a3a', cursor: 'pointer', fontSize: 15, lineHeight: 1, padding: '0 2px', flexShrink: 0 }}
+            style={{ background: 'none', border: 'none', color: '#cbd5e1', cursor: 'pointer', fontSize: 15, lineHeight: 1, padding: '0 2px', flexShrink: 0 }}
             title="Eliminar nodo"
           >×</button>
         </div>
         {data.description && (
-          <div style={{ color: '#4b7280', fontSize: 10.5, marginTop: 4, marginLeft: 14, lineHeight: 1.4 }}>
+          <div style={{ color: cfg.accent, fontSize: 10.5, marginTop: 4, marginLeft: 14, lineHeight: 1.4, opacity: 0.8 }}>
             {data.description}
           </div>
         )}
@@ -79,17 +79,17 @@ export default function CustomNode({ data, selected }) {
       <div style={{ padding: '6px 12px 4px' }}>
         <button
           onClick={e => { e.stopPropagation(); setNotesOpen(x => !x); }}
-          style={{ background: 'none', border: 'none', cursor: 'pointer', fontSize: 10, color: data.notes ? '#64748b' : '#1e3a3a', padding: 0, display: 'flex', alignItems: 'center', gap: 4 }}
+          style={{ background: 'none', border: 'none', cursor: 'pointer', fontSize: 10, color: data.notes ? cfg.accent : '#cbd5e1', padding: 0, display: 'flex', alignItems: 'center', gap: 4 }}
         >
           <span style={{ fontSize: 8 }}>{notesOpen ? '▾' : '▸'}</span>
           {data.notes ? 'Ver notas' : 'Añadir notas'}
         </button>
         {notesOpen && (
           <div
-            style={{ marginTop: 6, color: '#4b7280', fontSize: 10.5, lineHeight: 1.55, whiteSpace: 'pre-wrap', wordBreak: 'break-word', cursor: 'text' }}
+            style={{ marginTop: 6, color: '#64748b', fontSize: 10.5, lineHeight: 1.55, whiteSpace: 'pre-wrap', wordBreak: 'break-word', cursor: 'text' }}
             onDoubleClick={e => { e.stopPropagation(); data.onEdit?.(); }}
           >
-            {data.notes || <em style={{ color: '#1e3a3a' }}>Sin notas — doble clic para editar</em>}
+            {data.notes || <em style={{ color: '#e2e8f0' }}>Sin notas — doble clic para editar</em>}
           </div>
         )}
       </div>
@@ -97,22 +97,22 @@ export default function CustomNode({ data, selected }) {
       {/* Footer */}
       <div style={{ padding: '4px 12px 8px', display: 'flex', alignItems: 'center', gap: 6 }}>
         <span style={{ fontSize: 9.5, color: cfg.accent, fontWeight: 600 }}>
-          <span style={{ opacity: 0.7 }}>● </span>{cfg.label}
+          <span style={{ opacity: 0.6 }}>● </span>{cfg.label}
         </span>
         {priorityColor && (
-          <span style={{ fontSize: 9, color: priorityColor, fontWeight: 600, marginLeft: 2 }}>
+          <span style={{ fontSize: 9, color: priorityColor, fontWeight: 700 }}>
             {data.priority === 'high' ? '↑ Alta' : '→ Media'}
           </span>
         )}
         {data.updatedAt && (
-          <span style={{ marginLeft: 'auto', fontSize: 9, color: '#1e3a3a' }}>
+          <span style={{ marginLeft: 'auto', fontSize: 9, color: '#cbd5e1' }}>
             {timeAgo(data.updatedAt)}
           </span>
         )}
       </div>
 
       <Handle type="source" position={Position.Right}
-        style={{ background: '#0f2020', border: '2px solid #1e3a3a', width: 10, height: 10 }} />
+        style={{ background: '#fff', border: `2px solid ${cfg.border}`, width: 10, height: 10 }} />
     </div>
   );
 }
