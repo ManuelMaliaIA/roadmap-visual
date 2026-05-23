@@ -8,9 +8,9 @@ const STATUS_OPTIONS = [
 ];
 
 const PRIORITY_OPTIONS = [
-  { value: 'high',   label: '↑ Alta',  color: '#ef4444' },
-  { value: 'medium', label: '→ Media', color: '#f97316' },
-  { value: 'low',    label: '↓ Baja',  color: '#52525b' },
+  { value: 'none',   label: '— Ninguna', color: '#52525b' },
+  { value: 'medium', label: '→ Media',   color: '#f97316' },
+  { value: 'high',   label: '↑ Alta',    color: '#ef4444' },
 ];
 
 export default function EditNodeModal({ node, onClose, onSave }) {
@@ -18,7 +18,7 @@ export default function EditNodeModal({ node, onClose, onSave }) {
   const [description, setDescription] = useState(node.data.description ?? '');
   const [notes, setNotes] = useState(node.data.notes ?? '');
   const [status, setStatus] = useState(node.data.status);
-  const [priority, setPriority] = useState(node.data.priority ?? 'low');
+  const [priority, setPriority] = useState(node.data.priority === 'low' ? 'none' : (node.data.priority ?? 'none'));
 
   function handleSubmit(e) {
     e.preventDefault();
