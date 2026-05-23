@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useEffect, useRef } from 'react';
+import { useCallback, useMemo, useEffect } from 'react';
 import {
   ReactFlow,
   Background,
@@ -7,9 +7,23 @@ import {
   addEdge,
   useNodesState,
   useEdgesState,
+  useReactFlow,
 } from '@xyflow/react';
 import '@xyflow/react/dist/style.css';
 import CustomNode from './CustomNode';
+
+function PaneDoubleClick({ onCreateAt }) {
+  const { screenToFlowPosition } = useReactFlow();
+  return (
+    <div
+      style={{ position: 'absolute', inset: 0, zIndex: 0 }}
+      onDoubleClick={e => {
+        if (e.target.closest('.react-flow__node')) return;
+        onCreateAt(screenToFlowPosition({ x: e.clientX, y: e.clientY }));
+      }}
+    />
+  );
+}
 
 const nodeTypes = { roadmapNode: CustomNode };
 
@@ -29,7 +43,6 @@ function findNextActionId(nodes, edges) {
 }
 
 export default function RoadmapFlow({ project, onProjectChange, onEditNode, onCreateAt, searchQuery }) {
-  const rfInstance = useRef(null);
   const enrichedNodes = useMemo(() => {
     const nextId = findNextActionId(project.nodes, project.edges);
     const q = searchQuery?.trim().toLowerCase();
@@ -66,13 +79,6 @@ export default function RoadmapFlow({ project, onProjectChange, onEditNode, onCr
     ));
   }, [project.id, onProjectChange]);
 
-  const handleDoubleClick = useCallback((e) => {
-    if (!rfInstance.current || !onCreateAt) return;
-    if (e.target.closest('.react-flow__node')) return;
-    const position = rfInstance.current.screenToFlowPosition({ x: e.clientX, y: e.clientY });
-    onCreateAt(position);
-  }, [onCreateAt]);
-
   const onNodeDragStop = useCallback((_, node) => {
     onProjectChange(prev => prev.map(p =>
       p.id !== project.id ? p : {
@@ -108,7 +114,7 @@ export default function RoadmapFlow({ project, onProjectChange, onEditNode, onCr
       </div>
 
       {/* Flow canvas */}
-      <div style={{ flex: 1 }} onDoubleClick={handleDoubleClick}>
+      <div style={{ flex: 1 }}>
         <ReactFlow
           nodes={nodes}
           edges={edges}
@@ -116,7 +122,6 @@ export default function RoadmapFlow({ project, onProjectChange, onEditNode, onCr
           onEdgesChange={onEdgesChange}
           onConnect={onConnect}
           onNodeDragStop={onNodeDragStop}
-          onInit={inst => { rfInstance.current = inst; }}
           nodeTypes={nodeTypes}
           fitView
           fitViewOptions={{ padding: 0.3 }}
@@ -125,6 +130,7 @@ export default function RoadmapFlow({ project, onProjectChange, onEditNode, onCr
             markerEnd: { type: 'arrowclosed', color: '#3f3f46' },
           }}
         >
+          {onCreateAt && <PaneDoubleClick onCreateAt={onCreateAt} />}
           <Background color="#3d3a52" gap={22} size={1.5} style={{ background: '#0d0d12' }} />
           <Controls style={{ background: '#111113', border: '1px solid #27272a', borderRadius: 8 }} />
           <MiniMap
