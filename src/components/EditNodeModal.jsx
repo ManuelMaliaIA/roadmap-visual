@@ -8,9 +8,9 @@ const STATUS_OPTIONS = [
 ];
 
 const PRIORITY_OPTIONS = [
-  { value: 'high',   label: '↑ Alta',  color: '#ef4444' },
+  { value: 'high',   label: '↑ Alta',  color: '#f43f5e' },
   { value: 'medium', label: '→ Media', color: '#f97316' },
-  { value: 'low',    label: '↓ Baja',  color: '#52525b' },
+  { value: 'low',    label: '↓ Baja',  color: '#1e4040' },
 ];
 
 export default function EditNodeModal({ node, onClose, onSave }) {
@@ -28,8 +28,8 @@ export default function EditNodeModal({ node, onClose, onSave }) {
 
   return (
     <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.75)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000 }}>
-      <form onSubmit={handleSubmit} style={{ background: '#111113', border: '1px solid #27272a', borderRadius: 14, padding: 28, width: 420, boxShadow: '0 24px 80px rgba(0,0,0,0.7)' }}>
-        <h3 style={{ margin: '0 0 22px', color: '#fafafa', fontSize: 15, fontWeight: 700 }}>Editar nodo</h3>
+      <form onSubmit={handleSubmit} style={{ background: '#080f0f', border: '1px solid #0f2828', borderRadius: 14, padding: 28, width: 420, boxShadow: '0 24px 80px rgba(0,0,0,0.7)' }}>
+        <h3 style={{ margin: '0 0 22px', color: '#e2e8f0', fontSize: 15, fontWeight: 700 }}>Editar nodo</h3>
 
         <label style={lbl}>Nombre</label>
         <input autoFocus value={label} onChange={e => setLabel(e.target.value)} style={inp} required />
@@ -46,7 +46,7 @@ export default function EditNodeModal({ node, onClose, onSave }) {
         <div style={{ display: 'flex', gap: 8, marginBottom: 4 }}>
           {PRIORITY_OPTIONS.map(o => (
             <button key={o.value} type="button" onClick={() => setPriority(o.value)}
-              style={{ flex: 1, padding: '8px 0', borderRadius: 7, cursor: 'pointer', fontSize: 12, fontWeight: 600, background: priority === o.value ? `${o.color}20` : '#0c0c0e', border: `1.5px solid ${priority === o.value ? o.color : '#27272a'}`, color: priority === o.value ? o.color : '#52525b', transition: 'all 0.12s' }}
+              style={{ flex: 1, padding: '8px 0', borderRadius: 7, cursor: 'pointer', fontSize: 12, fontWeight: 600, background: priority === o.value ? `${o.color}20` : '#060c0c', border: `1.5px solid ${priority === o.value ? o.color : '#0f2828'}`, color: priority === o.value ? o.color : '#1e4040', transition: 'all 0.12s' }}
             >{o.label}</button>
           ))}
         </div>
@@ -57,11 +57,11 @@ export default function EditNodeModal({ node, onClose, onSave }) {
 
         <div style={{ display: 'flex', gap: 10, marginTop: 24 }}>
           <button type="button" onClick={onClose}
-            style={{ flex: 1, padding: '9px 0', background: '#18181b', border: '1px solid #27272a', borderRadius: 7, color: '#71717a', cursor: 'pointer', fontSize: 13 }}>
+            style={{ flex: 1, padding: '9px 0', background: '#0a1414', border: '1px solid #0f2828', borderRadius: 7, color: '#1e4040', cursor: 'pointer', fontSize: 13 }}>
             Cancelar
           </button>
           <button type="submit"
-            style={{ flex: 2, padding: '9px 0', background: '#7c3aed', border: 'none', borderRadius: 7, color: '#fff', cursor: 'pointer', fontSize: 13, fontWeight: 700 }}>
+            style={{ flex: 2, padding: '9px 0', background: '#0d9488', border: 'none', borderRadius: 7, color: '#fff', cursor: 'pointer', fontSize: 13, fontWeight: 700 }}>
             Guardar
           </button>
         </div>
@@ -70,5 +70,5 @@ export default function EditNodeModal({ node, onClose, onSave }) {
   );
 }
 
-const lbl = { display: 'block', color: '#52525b', fontSize: 11, marginBottom: 5, marginTop: 16, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.06em' };
-const inp = { width: '100%', background: '#0c0c0e', border: '1px solid #27272a', borderRadius: 7, padding: '9px 12px', color: '#fafafa', fontSize: 13, outline: 'none', boxSizing: 'border-box', fontFamily: 'inherit' };
+const lbl = { display: 'block', color: '#1e4040', fontSize: 11, marginBottom: 5, marginTop: 16, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.06em' };
+const inp = { width: '100%', background: '#060c0c', border: '1px solid #0f2828', borderRadius: 7, padding: '9px 12px', color: '#e2e8f0', fontSize: 13, outline: 'none', boxSizing: 'border-box', fontFamily: 'inherit' };
