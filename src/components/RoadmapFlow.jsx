@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useEffect } from 'react';
+import { useCallback, useMemo, useEffect, useRef } from 'react';
 import {
   ReactFlow,
   Background,
@@ -28,7 +28,8 @@ function findNextActionId(nodes, edges) {
   return null;
 }
 
-export default function RoadmapFlow({ project, onProjectChange, onEditNode, searchQuery }) {
+export default function RoadmapFlow({ project, onProjectChange, onEditNode, onCreateAt, searchQuery }) {
+  const rfInstance = useRef(null);
   const enrichedNodes = useMemo(() => {
     const nextId = findNextActionId(project.nodes, project.edges);
     const q = searchQuery?.trim().toLowerCase();
@@ -64,6 +65,12 @@ export default function RoadmapFlow({ project, onProjectChange, onEditNode, sear
       p.id !== project.id ? p : { ...p, edges: addEdge(newEdge, p.edges) }
     ));
   }, [project.id, onProjectChange]);
+
+  const handlePaneDoubleClick = useCallback((e) => {
+    if (!rfInstance.current || !onCreateAt) return;
+    const position = rfInstance.current.screenToFlowPosition({ x: e.clientX, y: e.clientY });
+    onCreateAt(position);
+  }, [onCreateAt]);
 
   const onNodeDragStop = useCallback((_, node) => {
     onProjectChange(prev => prev.map(p =>
@@ -108,6 +115,8 @@ export default function RoadmapFlow({ project, onProjectChange, onEditNode, sear
           onEdgesChange={onEdgesChange}
           onConnect={onConnect}
           onNodeDragStop={onNodeDragStop}
+          onPaneDoubleClick={handlePaneDoubleClick}
+          onInit={inst => { rfInstance.current = inst; }}
           nodeTypes={nodeTypes}
           fitView
           fitViewOptions={{ padding: 0.3 }}

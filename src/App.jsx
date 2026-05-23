@@ -65,6 +65,20 @@ export default function App() {
     if (activeId === pid) setActiveId(remaining[0].id);
   }, [projects, activeId, setProjects]);
 
+  const handleCreateNodeAt = useCallback((position) => {
+    const id = `custom-${++nodeCounter}`;
+    setProjects(prev => prev.map(p =>
+      p.id !== activeId ? p : {
+        ...p,
+        nodes: [...p.nodes, {
+          id, type: 'roadmapNode', position,
+          data: { label: 'Nuevo paso', description: '', status: 'pending', notes: '', priority: 'medium', updatedAt: new Date().toISOString() },
+        }],
+      }
+    ));
+    setEditingNodeId(id);
+  }, [activeId, setProjects]);
+
   const handleReset = useCallback(() => {
     if (!window.confirm('¿Resetear todos los proyectos al estado inicial?')) return;
     setProjects(INITIAL_PROJECTS);
@@ -113,6 +127,7 @@ export default function App() {
               project={activeProject}
               onProjectChange={setProjects}
               onEditNode={setEditingNodeId}
+              onCreateAt={handleCreateNodeAt}
               searchQuery={searchQuery}
             />
           ) : (
