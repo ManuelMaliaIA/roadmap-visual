@@ -1,9 +1,12 @@
 import { useState } from 'react';
 
-export default function ProjectSidebar({ projects, activeId, onSelect, onCreate, onDelete }) {
+export default function ProjectSidebar({ projects, activeId, onSelect, onCreate, onDelete, onRename, onDuplicate }) {
   const [collapsed, setCollapsed] = useState(false);
   const [adding, setAdding] = useState(false);
   const [newName, setNewName] = useState('');
+  const [renamingId, setRenamingId] = useState(null);
+  const [renameValue, setRenameValue] = useState('');
+  const [hoveredId, setHoveredId] = useState(null);
 
   function handleCreate() {
     const name = newName.trim();
@@ -11,6 +14,18 @@ export default function ProjectSidebar({ projects, activeId, onSelect, onCreate,
     onCreate(name);
     setNewName('');
     setAdding(false);
+  }
+
+  function startRename(p) {
+    setRenamingId(p.id);
+    setRenameValue(p.name);
+  }
+
+  function commitRename() {
+    const name = renameValue.trim();
+    if (name && renamingId) onRename(renamingId, name);
+    setRenamingId(null);
+    setRenameValue('');
   }
 
   if (collapsed) {
@@ -33,18 +48,50 @@ export default function ProjectSidebar({ projects, activeId, onSelect, onCreate,
       </div>
 
       <div style={{ flex: 1, overflowY: 'auto', padding: '6px 0' }}>
-        {projects.map(p => (
-          <div key={p.id} onClick={() => onSelect(p.id)}
-            style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '8px 12px', background: p.id === activeId ? '#18181b' : 'transparent', borderLeft: `2px solid ${p.id === activeId ? '#7c3aed' : 'transparent'}`, cursor: 'pointer', transition: 'background 0.12s' }}
-          >
-            <span style={{ flex: 1, fontSize: 12.5, color: p.id === activeId ? '#fafafa' : '#71717a', fontWeight: p.id === activeId ? 600 : 400, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
-              {p.name}
-            </span>
-            {projects.length > 1 && (
-              <button onClick={e => { e.stopPropagation(); onDelete(p.id); }} style={{ background: 'none', border: 'none', color: '#3f3f46', cursor: 'pointer', fontSize: 14, padding: '0 2px', lineHeight: 1 }} title="Eliminar">×</button>
-            )}
-          </div>
-        ))}
+        {projects.map(p => {
+          const isActive = p.id === activeId;
+          const isHovered = hoveredId === p.id;
+          const isRenaming = renamingId === p.id;
+          const showActions = (isActive || isHovered) && !isRenaming;
+
+          return (
+            <div key={p.id}
+              onClick={() => { if (!isRenaming) onSelect(p.id); }}
+              onMouseEnter={() => setHoveredId(p.id)}
+              onMouseLeave={() => setHoveredId(null)}
+              style={{ display: 'flex', alignItems: 'center', gap: 4, padding: '8px 8px 8px 12px', background: isActive ? '#18181b' : 'transparent', borderLeft: `2px solid ${isActive ? '#7c3aed' : 'transparent'}`, cursor: 'pointer', transition: 'background 0.12s' }}
+            >
+              {isRenaming ? (
+                <input
+                  autoFocus
+                  value={renameValue}
+                  onChange={e => setRenameValue(e.target.value)}
+                  onKeyDown={e => { if (e.key === 'Enter') commitRename(); if (e.key === 'Escape') setRenamingId(null); }}
+                  onBlur={commitRename}
+                  onClick={e => e.stopPropagation()}
+                  style={{ flex: 1, background: '#27272a', border: '1px solid #7c3aed', borderRadius: 4, padding: '2px 6px', color: '#fafafa', fontSize: 12, outline: 'none', minWidth: 0 }}
+                />
+              ) : (
+                <span style={{ flex: 1, fontSize: 12.5, color: isActive ? '#fafafa' : '#71717a', fontWeight: isActive ? 600 : 400, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                  {p.name}
+                </span>
+              )}
+
+              {showActions && (
+                <>
+                  <button onClick={e => { e.stopPropagation(); startRename(p); }} title="Renombrar"
+                    style={smBtn}>✎</button>
+                  <button onClick={e => { e.stopPropagation(); onDuplicate(p.id); }} title="Duplicar"
+                    style={smBtn}>⧉</button>
+                  {projects.length > 1 && (
+                    <button onClick={e => { e.stopPropagation(); onDelete(p.id); }} title="Eliminar"
+                      style={smBtn}>×</button>
+                  )}
+                </>
+              )}
+            </div>
+          );
+        })}
       </div>
 
       <div style={{ padding: '8px 10px 12px', borderTop: '1px solid #1c1c1f', flexShrink: 0 }}>
@@ -72,3 +119,4 @@ export default function ProjectSidebar({ projects, activeId, onSelect, onCreate,
 }
 
 const iconBtn = { background: 'none', border: 'none', color: '#52525b', cursor: 'pointer', fontSize: 18, padding: '0 4px', lineHeight: 1, display: 'flex', alignItems: 'center' };
+const smBtn   = { background: 'none', border: 'none', color: '#52525b', cursor: 'pointer', fontSize: 13, padding: '0 2px', lineHeight: 1, flexShrink: 0 };

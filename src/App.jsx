@@ -79,6 +79,31 @@ export default function App() {
     setEditingNodeId(id);
   }, [activeId, setProjects]);
 
+  const handleRenameProject = useCallback((id, name) => {
+    setProjects(prev => prev.map(p => p.id !== id ? p : { ...p, name }));
+  }, [setProjects]);
+
+  const handleDuplicateProject = useCallback((id) => {
+    const source = projects.find(p => p.id === id);
+    if (!source) return;
+    const newId = `proj-${Date.now()}`;
+    const ts = Date.now();
+    const idMap = {};
+    const newNodes = source.nodes.map(n => {
+      const nid = `${n.id}-c${ts}`;
+      idMap[n.id] = nid;
+      return { ...n, id: nid };
+    });
+    const newEdges = source.edges.map(e => ({
+      ...e,
+      id: `${e.id}-c${ts}`,
+      source: idMap[e.source] ?? e.source,
+      target: idMap[e.target] ?? e.target,
+    }));
+    setProjects(prev => [...prev, { id: newId, name: `${source.name} (copia)`, nodes: newNodes, edges: newEdges }]);
+    setActiveId(newId);
+  }, [projects, setProjects]);
+
   const handleReset = useCallback(() => {
     if (!window.confirm('¿Resetear todos los proyectos al estado inicial?')) return;
     setProjects(INITIAL_PROJECTS);
@@ -118,6 +143,8 @@ export default function App() {
           onSelect={setActiveId}
           onCreate={handleCreateProject}
           onDelete={handleDeleteProject}
+          onRename={handleRenameProject}
+          onDuplicate={handleDuplicateProject}
         />
 
         <main className="canvas">
