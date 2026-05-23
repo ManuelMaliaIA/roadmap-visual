@@ -126,21 +126,21 @@ export default function RoadmapFlow({ project, onProjectChange, onEditNode, onCr
           fitView
           fitViewOptions={{ padding: 0.3 }}
           defaultEdgeOptions={{
-            style: { stroke: '#94a3b8', strokeWidth: 2 },
-            markerEnd: { type: 'arrowclosed', color: '#94a3b8' },
+            style: { stroke: '#1e4040', strokeWidth: 2 },
+            markerEnd: { type: 'arrowclosed', color: '#1e4040' },
           }}
         >
           {onCreateAt && <PaneDoubleClick onCreateAt={onCreateAt} />}
-          <Background color="#e2e8f0" gap={22} size={1.5} style={{ background: '#f8fafc' }} />
-          <Controls style={{ background: '#fff', border: '1px solid #e2e8f0', borderRadius: 8 }} />
+          <Background color="#0d3030" gap={22} size={1.5} style={{ background: '#080c0c' }} />
+          <Controls style={{ background: '#0a1414', border: '1px solid #0f2828', borderRadius: 8 }} />
           <MiniMap
             nodeColor={n => {
               if (n.data?.status === 'done') return '#10b981';
               if (n.data?.status === 'in_progress') return '#06b6d4';
               if (n.data?.status === 'blocked') return '#f43f5e';
-              return '#94a3b8';
+              return '#334155';
             }}
-            style={{ background: '#f1f5f9', border: '1px solid #e2e8f0', borderRadius: 8 }}
+            style={{ background: '#080c0c', border: '1px solid #0f2020', borderRadius: 8 }}
           />
         </ReactFlow>
       </div>
