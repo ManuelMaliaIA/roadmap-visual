@@ -66,8 +66,9 @@ export default function RoadmapFlow({ project, onProjectChange, onEditNode, onCr
     ));
   }, [project.id, onProjectChange]);
 
-  const handlePaneDoubleClick = useCallback((e) => {
+  const handleDoubleClick = useCallback((e) => {
     if (!rfInstance.current || !onCreateAt) return;
+    if (e.target.closest('.react-flow__node')) return;
     const position = rfInstance.current.screenToFlowPosition({ x: e.clientX, y: e.clientY });
     onCreateAt(position);
   }, [onCreateAt]);
@@ -107,7 +108,7 @@ export default function RoadmapFlow({ project, onProjectChange, onEditNode, onCr
       </div>
 
       {/* Flow canvas */}
-      <div style={{ flex: 1 }}>
+      <div style={{ flex: 1 }} onDoubleClick={handleDoubleClick}>
         <ReactFlow
           nodes={nodes}
           edges={edges}
@@ -115,7 +116,6 @@ export default function RoadmapFlow({ project, onProjectChange, onEditNode, onCr
           onEdgesChange={onEdgesChange}
           onConnect={onConnect}
           onNodeDragStop={onNodeDragStop}
-          onPaneDoubleClick={handlePaneDoubleClick}
           onInit={inst => { rfInstance.current = inst; }}
           nodeTypes={nodeTypes}
           fitView
