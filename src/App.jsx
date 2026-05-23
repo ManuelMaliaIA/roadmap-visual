@@ -3,6 +3,7 @@ import RoadmapFlow from './components/RoadmapFlow';
 import NodeModal from './components/NodeModal';
 import EditNodeModal from './components/EditNodeModal';
 import StatusPanel from './components/StatusPanel';
+import ProjectSidebar from './components/ProjectSidebar';
 import { useLocalStorage } from './hooks/useLocalStorage';
 import { INITIAL_PROJECTS } from './data/initialData';
 import './App.css';
@@ -14,8 +15,6 @@ export default function App() {
   const [activeId, setActiveId] = useState(projects[0]?.id ?? null);
   const [showAddModal, setShowAddModal] = useState(false);
   const [editingNodeId, setEditingNodeId] = useState(null);
-  const [showNewProjectModal, setShowNewProjectModal] = useState(false);
-  const [newProjectName, setNewProjectName] = useState('');
   const [searchQuery, setSearchQuery] = useState('');
 
   const activeProject = projects.find(p => p.id === activeId);
@@ -53,15 +52,11 @@ export default function App() {
     ));
   }, [activeId, setProjects]);
 
-  const handleCreateProject = useCallback(() => {
-    const name = newProjectName.trim();
-    if (!name) return;
+  const handleCreateProject = useCallback((name) => {
     const id = `proj-${Date.now()}`;
     setProjects(prev => [...prev, { id, name, nodes: [], edges: [] }]);
     setActiveId(id);
-    setNewProjectName('');
-    setShowNewProjectModal(false);
-  }, [newProjectName, setProjects]);
+  }, [setProjects]);
 
   const handleDeleteProject = useCallback((pid) => {
     if (projects.length <= 1) return;
@@ -82,17 +77,9 @@ export default function App() {
       <header className="header">
         <div className="header-left">
           <span className="logo">Roadmap</span>
-          <nav className="tabs">
-            {projects.map(p => (
-              <div key={p.id} className={`tab ${p.id === activeId ? 'tab-active' : ''}`}>
-                <button className="tab-btn" onClick={() => setActiveId(p.id)}>{p.name}</button>
-                {projects.length > 1 && (
-                  <button className="tab-close" onClick={() => handleDeleteProject(p.id)}>×</button>
-                )}
-              </div>
-            ))}
-            <button className="tab-new" onClick={() => setShowNewProjectModal(true)}>+</button>
-          </nav>
+          {activeProject && (
+            <span className="active-project-name">{activeProject.name}</span>
+          )}
         </div>
         <div className="header-right">
           <div className="search-wrap">
@@ -109,11 +96,16 @@ export default function App() {
         </div>
       </header>
 
-      {/* Body: sidebar + canvas */}
+      {/* Body: proyecto sidebar | canvas | status panel */}
       <div className="body">
-        {activeProject && (
-          <StatusPanel nodes={activeProject.nodes} onStatusChange={handleStatusChange} />
-        )}
+        <ProjectSidebar
+          projects={projects}
+          activeId={activeId}
+          onSelect={setActiveId}
+          onCreate={handleCreateProject}
+          onDelete={handleDeleteProject}
+        />
+
         <main className="canvas">
           {activeProject ? (
             <RoadmapFlow
@@ -124,9 +116,13 @@ export default function App() {
               searchQuery={searchQuery}
             />
           ) : (
-            <div className="empty">No hay proyectos. Crea uno con +</div>
+            <div className="empty">Crea un proyecto desde el panel izquierdo</div>
           )}
         </main>
+
+        {activeProject && (
+          <StatusPanel nodes={activeProject.nodes} onStatusChange={handleStatusChange} />
+        )}
       </div>
 
       {/* Modals */}
@@ -143,25 +139,6 @@ export default function App() {
             setEditingNodeId(null);
           }}
         />
-      )}
-
-      {showNewProjectModal && (
-        <div className="modal-overlay">
-          <div className="modal-box">
-            <h3>Nuevo proyecto</h3>
-            <input
-              autoFocus value={newProjectName}
-              onChange={e => setNewProjectName(e.target.value)}
-              onKeyDown={e => e.key === 'Enter' && handleCreateProject()}
-              placeholder="Nombre del proyecto"
-              className="modal-input"
-            />
-            <div className="modal-actions">
-              <button className="btn btn-ghost" onClick={() => setShowNewProjectModal(false)}>Cancelar</button>
-              <button className="btn btn-primary" onClick={handleCreateProject}>Crear</button>
-            </div>
-          </div>
-        </div>
       )}
     </div>
   );

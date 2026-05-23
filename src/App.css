@@ -38,45 +38,18 @@ body {
   flex-shrink: 0;
 }
 
-/* ---- Tabs ---- */
-.tabs { display: flex; align-items: center; gap: 3px; overflow-x: auto; }
-.tabs::-webkit-scrollbar { display: none; }
-
-.tab {
-  display: flex;
-  align-items: center;
-  border-radius: 6px;
-  border: 1px solid transparent;
-  transition: background 0.12s, border-color 0.12s;
-}
-.tab-active { background: #18181b; border-color: #27272a; }
-
-.tab-btn {
-  background: none; border: none;
-  color: #52525b; cursor: pointer;
-  font-size: 12.5px; padding: 5px 10px;
+/* ---- Project name in header ---- */
+.active-project-name {
+  font-size: 13px;
+  color: #52525b;
+  font-weight: 400;
+  padding-left: 10px;
+  border-left: 1px solid #27272a;
   white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 220px;
 }
-.tab-active .tab-btn { color: #fafafa; font-weight: 600; }
-.tab-btn:hover { color: #a1a1aa; }
-
-.tab-close {
-  background: none; border: none;
-  color: #3f3f46; cursor: pointer;
-  font-size: 14px; padding: 4px 6px; line-height: 1;
-}
-.tab-close:hover { color: #ef4444; }
-
-.tab-new {
-  background: none;
-  border: 1px dashed #27272a;
-  border-radius: 6px; color: '#3f3f46';
-  cursor: pointer; font-size: 16px;
-  padding: 1px 9px;
-  color: #3f3f46;
-  transition: color 0.12s, border-color 0.12s;
-}
-.tab-new:hover { color: #fafafa; border-color: #52525b; }
 
 /* ---- Search ---- */
 .search-wrap {

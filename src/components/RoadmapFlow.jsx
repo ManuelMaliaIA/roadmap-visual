@@ -116,7 +116,7 @@ export default function RoadmapFlow({ project, onProjectChange, onEditNode, sear
             markerEnd: { type: 'arrowclosed', color: '#3f3f46' },
           }}
         >
-          <Background color="#18181b" gap={22} size={1} />
+          <Background color="#3d3a52" gap={22} size={1.5} style={{ background: '#0d0d12' }} />
           <Controls style={{ background: '#111113', border: '1px solid #27272a', borderRadius: 8 }} />
           <MiniMap
             nodeColor={n => {
