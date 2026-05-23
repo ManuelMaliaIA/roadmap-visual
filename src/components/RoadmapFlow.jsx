@@ -97,17 +97,17 @@ export default function RoadmapFlow({ project, onProjectChange, onEditNode, onCr
   return (
     <div style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
       {/* Progress bar */}
-      <div style={{ padding: '8px 18px', background: '#09090b', borderBottom: '1px solid #18181b', flexShrink: 0 }}>
+      <div style={{ padding: '8px 18px', background: '#060a0a', borderBottom: '1px solid #0f2020', flexShrink: 0 }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 5 }}>
-          <span style={{ color: '#52525b', fontSize: 11 }}>
-            <strong style={{ color: '#d4d4d8' }}>{stats.done}/{stats.total}</strong> completados
+          <span style={{ color: '#1e4040', fontSize: 11 }}>
+            <strong style={{ color: '#94a3b8' }}>{stats.done}/{stats.total}</strong> completados
           </span>
-          <span style={{ color: '#8b5cf6', fontWeight: 700, fontSize: 11 }}>{stats.pct}%</span>
+          <span style={{ color: '#06b6d4', fontWeight: 700, fontSize: 11 }}>{stats.pct}%</span>
         </div>
-        <div style={{ background: '#18181b', borderRadius: 99, height: 3, overflow: 'hidden' }}>
+        <div style={{ background: '#0a1a1a', borderRadius: 99, height: 3, overflow: 'hidden' }}>
           <div style={{
             height: '100%', width: `${stats.pct}%`,
-            background: 'linear-gradient(90deg, #7c3aed, #6366f1)',
+            background: 'linear-gradient(90deg, #0d9488, #06b6d4)',
             borderRadius: 99, transition: 'width 0.4s ease',
           }} />
         </div>
@@ -131,16 +131,16 @@ export default function RoadmapFlow({ project, onProjectChange, onEditNode, onCr
           }}
         >
           {onCreateAt && <PaneDoubleClick onCreateAt={onCreateAt} />}
-          <Background color="#3d3a52" gap={22} size={1.5} style={{ background: '#0d0d12' }} />
-          <Controls style={{ background: '#111113', border: '1px solid #27272a', borderRadius: 8 }} />
+          <Background color="#0d3030" gap={22} size={1.5} style={{ background: '#080c0c' }} />
+          <Controls style={{ background: '#0a1414', border: '1px solid #0f2828', borderRadius: 8 }} />
           <MiniMap
             nodeColor={n => {
-              if (n.data?.status === 'done') return '#22c55e';
-              if (n.data?.status === 'in_progress') return '#eab308';
-              if (n.data?.status === 'blocked') return '#ef4444';
-              return '#3f3f46';
+              if (n.data?.status === 'done') return '#10b981';
+              if (n.data?.status === 'in_progress') return '#06b6d4';
+              if (n.data?.status === 'blocked') return '#f43f5e';
+              return '#334155';
             }}
-            style={{ background: '#09090b', border: '1px solid #1c1c1f', borderRadius: 8 }}
+            style={{ background: '#080c0c', border: '1px solid #0f2020', borderRadius: 8 }}
           />
         </ReactFlow>
       </div>

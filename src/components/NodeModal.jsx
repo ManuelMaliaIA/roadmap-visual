@@ -13,39 +13,18 @@ export default function NodeModal({ onClose, onAdd }) {
   }
 
   return (
-    <div style={{
-      position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.55)',
-      display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000,
-    }}>
-      <form
-        onSubmit={handleSubmit}
-        style={{
-          background: '#1e293b', borderRadius: 12, padding: 28, width: 360,
-          boxShadow: '0 20px 60px rgba(0,0,0,0.5)', border: '1px solid #334155',
-        }}
-      >
-        <h3 style={{ margin: '0 0 20px', color: '#f1f5f9', fontSize: 16 }}>Añadir nodo</h3>
+    <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.75)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000 }}>
+      <form onSubmit={handleSubmit} style={{ background: '#080f0f', border: '1px solid #0f2828', borderRadius: 12, padding: 28, width: 360, boxShadow: '0 20px 60px rgba(0,0,0,0.7)' }}>
+        <h3 style={{ margin: '0 0 20px', color: '#e2e8f0', fontSize: 15, fontWeight: 700 }}>Añadir nodo</h3>
 
-        <label style={labelStyle}>Nombre del paso</label>
-        <input
-          autoFocus
-          value={label}
-          onChange={e => setLabel(e.target.value)}
-          placeholder="ej. Diseño UI/UX"
-          style={inputStyle}
-          required
-        />
+        <label style={lbl}>Nombre del paso</label>
+        <input autoFocus value={label} onChange={e => setLabel(e.target.value)} placeholder="ej. Diseño UI/UX" style={inp} required />
 
-        <label style={labelStyle}>Descripción (opcional)</label>
-        <input
-          value={description}
-          onChange={e => setDescription(e.target.value)}
-          placeholder="ej. Wireframes en Figma"
-          style={inputStyle}
-        />
+        <label style={lbl}>Descripción (opcional)</label>
+        <input value={description} onChange={e => setDescription(e.target.value)} placeholder="ej. Wireframes en Figma" style={inp} />
 
-        <label style={labelStyle}>Estado inicial</label>
-        <select value={status} onChange={e => setStatus(e.target.value)} style={inputStyle}>
+        <label style={lbl}>Estado inicial</label>
+        <select value={status} onChange={e => setStatus(e.target.value)} style={inp}>
           <option value="pending">Pendiente</option>
           <option value="in_progress">En curso</option>
           <option value="done">Hecho</option>
@@ -53,25 +32,13 @@ export default function NodeModal({ onClose, onAdd }) {
         </select>
 
         <div style={{ display: 'flex', gap: 10, marginTop: 24 }}>
-          <button type="button" onClick={onClose} style={cancelBtnStyle}>Cancelar</button>
-          <button type="submit" style={submitBtnStyle}>Añadir</button>
+          <button type="button" onClick={onClose} style={{ flex: 1, padding: '9px 0', background: '#0a1414', border: '1px solid #0f2828', borderRadius: 6, color: '#1e4040', cursor: 'pointer', fontSize: 13 }}>Cancelar</button>
+          <button type="submit" style={{ flex: 2, padding: '9px 0', background: '#0d9488', border: 'none', borderRadius: 6, color: '#fff', cursor: 'pointer', fontSize: 13, fontWeight: 700 }}>Añadir</button>
         </div>
       </form>
     </div>
   );
 }
 
-const labelStyle = { display: 'block', color: '#94a3b8', fontSize: 12, marginBottom: 4, marginTop: 14 };
-const inputStyle = {
-  width: '100%', background: '#0f172a', border: '1px solid #334155',
-  borderRadius: 6, padding: '8px 10px', color: '#f1f5f9', fontSize: 13,
-  boxSizing: 'border-box', outline: 'none',
-};
-const cancelBtnStyle = {
-  flex: 1, padding: '9px 0', background: '#334155', border: 'none',
-  borderRadius: 6, color: '#94a3b8', cursor: 'pointer', fontSize: 13,
-};
-const submitBtnStyle = {
-  flex: 2, padding: '9px 0', background: '#3b82f6', border: 'none',
-  borderRadius: 6, color: '#fff', cursor: 'pointer', fontSize: 13, fontWeight: 700,
-};
+const lbl = { display: 'block', color: '#1e4040', fontSize: 11, marginBottom: 5, marginTop: 14, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.06em' };
+const inp = { width: '100%', background: '#060c0c', border: '1px solid #0f2828', borderRadius: 6, padding: '8px 10px', color: '#e2e8f0', fontSize: 13, boxSizing: 'border-box', outline: 'none', fontFamily: 'inherit' };
